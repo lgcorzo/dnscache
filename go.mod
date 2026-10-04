@@ -1,4 +1,4 @@
-module github.com/minio/dnscache
+module github.com/lgcorzo/dnscache
 
 go 1.19
 
