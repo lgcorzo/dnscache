@@ -72,7 +72,7 @@ func (r *Resolver) refreshRecords() {
 	}
 
 	for _, key := range update {
-		r.update(context.Background(), key, false)
+		_, _ = r.update(context.Background(), key, false)
 	}
 }
 

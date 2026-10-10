@@ -59,7 +59,7 @@ func TestRaceOnDelete(t *testing.T) {
 			case <-ls:
 				return
 			default:
-				r.LookupHost(context.Background(), "google.com")
+				_, _ = r.LookupHost(context.Background(), "google.com")
 				time.Sleep(2 * time.Millisecond)
 			}
 		}
@@ -113,6 +113,15 @@ func TestResolver_LookupHost_DNSHooksGetTriggerd(t *testing.T) {
 
 	if dnsDoneInfo == nil {
 		t.Error("dnsDoneInfo is nil, indicating that DNSDone callback has not been invoked")
+	}
+}
+
+func TestFakeResolver(t *testing.T) {
+	f := &fakeResolver{}
+	_, _ = f.LookupHost(context.Background(), "example.com")
+	_, _ = f.LookupAddr(context.Background(), "127.0.0.1")
+	if atomic.LoadInt32(&f.LookupHostCalls) != 1 || atomic.LoadInt32(&f.LookupAddrCalls) != 1 {
+		t.Error("fakeResolver calls not recorded properly")
 	}
 }
 
